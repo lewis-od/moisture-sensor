@@ -6,8 +6,8 @@ interface Sensor:
 
 
 class MoistureSensor implements Sensor:
-  moisture-address_ /ByteArray := #[0x0F, 0x10]
-  device_ /i2c.Device
+  moisture-address_ /ByteArray ::= #[0x0F, 0x10]
+  device_ /i2c.Device := ?
 
   constructor .device_:
 
@@ -17,8 +17,8 @@ class MoistureSensor implements Sensor:
 
 
 class TemperatureSensor implements Sensor:
-  temperature-address_ /ByteArray := #[0x00, 0x04]
-  device_ /i2c.Device
+  temperature-address_ /ByteArray ::= #[0x00, 0x04]
+  device_ /i2c.Device := ?
 
   constructor .device_:
 
