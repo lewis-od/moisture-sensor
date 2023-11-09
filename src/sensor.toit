@@ -1,6 +1,7 @@
 import i2c
 import fixed-point show FixedPoint
 
+
 interface Sensor:
   read -> FixedPoint
 
