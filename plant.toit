@@ -1,5 +1,8 @@
 import gpio
 import i2c
+import .sensor show TemperatureSensor MoistureSensor
+
+DEVICE-ADDRESS := 0x36
 
 main:
   scl := gpio.Pin 25
@@ -9,25 +12,20 @@ main:
   print "Setting up bus..."
   bus := i2c.Bus --sda=sda --scl=scl --frequency=frequency
 
-  sensor := MoistureSensor bus
+  device := bus.device DEVICE-ADDRESS
+
+  moisture-sensor := MoistureSensor device
+  temp-sensor := TemperatureSensor device
 
   num-readings := 0
   while num-readings < 20:
-    reading := sensor.read-moisture
-    print reading
+    moisture-reading := moisture-sensor.read
+    print "Moisture: $(moisture-reading)"
+
+    sleep --ms=500
+
+    temp-reading := temp-sensor.read
+    print "Temp: $(temp-reading)"
 
     sleep --ms=500
     num-readings += 1
-
-
-class MoistureSensor:
-  device-address /int := 0x36
-  moisture-address /ByteArray := #[0x0F, 0x10]
-  device /i2c.Device
-
-  constructor bus / i2c.Bus:
-    device = bus.device device-address
-
-  read-moisture -> int:
-    reading := device.read-address moisture-address 2
-    return (reading[0] << 8) | reading[1]
