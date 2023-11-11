@@ -2,12 +2,13 @@ import fixed-point show FixedPoint
 import net
 import mqtt
 import .home-assistant show HomeAssistantClient HomeAssistantDevice
+import .secrets show PASSWORD
 import .sensor show Sensor FakeSensor
 
 CLIENT-ID ::= "moisture01"
 HOST ::= "localhost"
 USERNAME ::= "admin"
-PASSWORD ::= "password"
+BROADCAST-INTERVAL ::= Duration --m=1
 
 main:
   transport ::= mqtt.TcpTransport --net-open=(::net.open) --host=HOST
@@ -26,10 +27,9 @@ main:
     --client_=ha-client
   
   ha-device.start
-
   while true:
     ha-device.broadcast-state
-    sleep --ms=1000
+    sleep BROADCAST-INTERVAL
 
 create-sensor -> Sensor:
   values := [

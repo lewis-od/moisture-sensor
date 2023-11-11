@@ -5,7 +5,7 @@ import .sensor show Sensor MoistureSensor TemperatureSensor
 import .server show SensorServer
 
 
-DEVICE-ADDRESS ::= 0x36
+I2C-DEVICE-ADDRESS ::= 0x36
 
 
 main:
@@ -27,4 +27,4 @@ setup-sensor-device -> i2c.Device:
   frequency ::= 100_000
 
   bus ::= i2c.Bus --sda=sda --scl=scl --frequency=frequency
-  return bus.device DEVICE-ADDRESS
+  return bus.device I2C-DEVICE-ADDRESS
