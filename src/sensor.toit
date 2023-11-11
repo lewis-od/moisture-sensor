@@ -28,3 +28,15 @@ class TemperatureSensor implements Sensor:
     value := (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3]
     temp := (1.0 / (1 << 16)) * value
     return FixedPoint temp
+
+
+class FakeSensor implements Sensor:
+  values_ /List := ?
+  index_ /int := 0
+
+  constructor .values_:
+
+  read -> FixedPoint:
+    reading := values_[index_]
+    index_ = (index_ + 1) % values_.size
+    return reading
